@@ -42,35 +42,49 @@ const registerUser = asyncHandler (async (req, res) =>{
     // return res
 
     const { fullName, email , username, password} = req.body
-    // console.log(req.body)
-    // console.log("email", email)
+                // console.log(req.body)
+                // console.log("email", email)
 
-    // if (fullName === "") {
-    //     throw new ApiError(400, "fullName is required")
+                // if (fullName === "") {
+                //     throw new ApiError(400, "fullName is required")
+                // }
+                // console.log("file: ",req.files)
+    // if (
+    //     [fullName, email, username, password].some((field) => 
+    //         field?.trim() === "")
+    // ) {
+    //     throw new ApiError(400, "All fields are required")
     // }
-    // console.log("file: ",req.files)
+
     if (
-        [fullName, email, username, password].some((field) => 
-            field?.trim() === "")
-    ) {
-        throw new ApiError(400, "All fields are required")
-    }
+    [fullName, email, username, password].some(
+        (field) => !field || field.trim() === ""
+    )
+) {
+    throw new ApiError(400, "All fields are required")
+}
 
     // console.log([fullName, email, username, password].some((field) => 
     //         field?.trim() === ""))
-    const existedUser =await User.findOne({
-        $or: [{username}, { email}]
-    })
+    // const existedUser =await User.findOne({
+    //     $or: [{username}, { email}]
+    // })
+
+    const existedUser = await User.findOne({
+    $or: [{ username: username.toLowerCase() }, { email }]
+})
 
     // console.log(existedUser)
 
-    if (!existedUser) {
+    if (existedUser) {
         throw new ApiError(409, "User with email or username already exists");
     }
     // console.log(req.files)
 
+    const avatarLocalPath = req.files?.avatar?.[0]?.path;
+// const coverImageLocalPath = req.files?.coverImage?.[0]?.path;
 
-    const avatarLocalPath = req.files?.avatar[0]?.path;
+    // const avatarLocalPath = req.files?.avatar[0]?.path;
     // console.log(avatarLocalPath)
     
     // const coverImageLocalPath = req.files?.coverImage[0]?.path;
@@ -88,8 +102,13 @@ const registerUser = asyncHandler (async (req, res) =>{
 
 
     const avatar = await uploadOnCloudinary(avatarLocalPath);
-    const coverImage = await uploadOnCloudinary(coverImageLocalPath);
+    // const coverImage = await uploadOnCloudinary(coverImageLocalPath);
 
+    let coverImage;
+
+if (coverImageLocalPath) {
+    coverImage = await uploadOnCloudinary(coverImageLocalPath);
+}
     // console.log(avatar);
 
     // console.log(coverImage)
@@ -121,7 +140,7 @@ const registerUser = asyncHandler (async (req, res) =>{
     //     new ApiResponse(200, createdUser, "User register successfully")
     // ))
     return res.status(201).json(
-        new ApiResponse(200, createdUser, "User register successfully")
+        new ApiResponse(201, createdUser, "User register successfully")
     );
 })
 
@@ -252,8 +271,140 @@ const refreshAccessToken = asyncHandler (async (req, res) => {
 
 })
 
+const changeCurrentPassword = asyncHandler ( async (req, res) =>
+{
+    const {oldPassword, newPassword} = req.body
+
+    // const {oldPassword, newPassword, confPassword} = req.body
+
+    // if (!(newPassword === confPassword)) {
+    //     throw new ApiError(400, "Password do not match")
+    // }
+
+    const user = await User.findById(req.user?._id)
+
+    const isPasswordCorrect = await user.isPasswordCorrect(oldPassword)
+    
+    if (!isPasswordCorrect) {
+        throw new ApiError(400, "Invalid old password")
+    }
+
+    user.password = newPassword
+    await user.save({ validateBeforeSave: false})
+
+    return res
+            .status(200)
+            .json(
+                new ApiResponse(200, {}, "Password changed successfully")
+            )
+
+})
+
+const updateAccountDetails = asyncHandler ( async (req, res) =>
+{
+    const { fullName, email} = req.body
+
+    if (!fullName || !email) {
+        throw new ApiError(400, "All fields are required")
+    }
+
+    const user = await User.findByIdAndUpdate(
+        req.user?._id,
+        {
+            $set: {
+                fullName,
+                email
+            }
+        },
+        {
+            new: true
+        }
+    ).select("-password")
+
+    return res
+            .status(200)
+            .json(
+                new ApiResponse(200, user, "Account details updated successfully")
+            )
+
+})
+
+const updateUserAvatar = asyncHandler ( async (req, res) =>
+{
+    const avatarLocalPath = req.file?.path
+
+    if(!avatarLocalPath)
+    {
+        throw new ApiError(400, "Avatar file is missing")
+    }
+
+    const avatar = await uploadOnCloudinary(avatarLocalPath)
+
+    if (!avatar.url) {
+        throw new ApiError(400, "Error while uploading on avatar")
+    }
+
+    const user = await User.findByIdAndUpdate(
+        req.user?._id,
+        {
+            $set: {
+                avatar: avatar.url
+            }
+        },
+        {
+            new : true
+        }
+    ).select("-password")
+
+    return res
+            .status(200)
+            .json(
+                new ApiResponse(200, user, "Avatar image updated successfully")
+            )
+})
+
+const updateUserCoverImage = asyncHandler ( async (req, res) =>
+{
+    const coverImageLocalPath = req.file?.path
+
+    if(!coverImageLocalPath)
+    {
+        throw new ApiError(400, "Avatar file is missing")
+    }
+
+    const coverImage = await uploadOnCloudinary(coverImageLocalPath)
+
+    if (!coverImage.url) {
+        throw new ApiError(400, "Error while uploading on avatar")
+    }
+
+    const user = await User.findByIdAndUpdate(
+        req.user?._id,
+        {
+            $set: {
+                coverImage: coverImage.url
+            }
+        },
+        {
+            new : true
+        }
+    ).select("-password")
+
+    return res
+            .status(200)
+            .json(
+                new ApiResponse(200, user, "CoverImage image updated successfully")
+            )
+})
+
+
 export { 
     registerUser,
     loginUser,
     logoutUser,
+    refreshAccessToken,
+    changeCurrentPassword,
+    updateAccountDetails,
+    updateUserAvatar,
+    updateUserCoverImage,
 }
