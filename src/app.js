@@ -10,7 +10,6 @@ const allowedOrigins = [
 ];
 
 app.use(cors({
-<<<<<<< HEAD
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
@@ -20,11 +19,6 @@ app.use(cors({
   },
   credentials: true,
 }));
-=======
-    origin: process.env.CORS_ORIGIN || "https://frontendrepoforyt.vercel.app",
-    credentials: true,
-}))
->>>>>>> 5fb9cff (fix: add CORS options and update origin)
 
 app.use(express.json({ limit: "16kb" }))
 app.use(express.urlencoded({ extended: true, limit: "16kb" }))
