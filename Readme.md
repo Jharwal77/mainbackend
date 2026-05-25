@@ -1,39 +1,112 @@
 # 🚀 Backend – Social Media Platform (YouTube + Twitter Clone)
 
-This is the backend API for a full-stack social media platform inspired by YouTube and Twitter. It handles authentication, video management, tweets, likes, subscriptions, and user interactions.
+A production-style backend API for a full-stack social media platform inspired by platforms like YouTube and Twitter.
 
-Built using Node.js, Express, and MongoDB, the backend follows a clean and scalable MVC architecture.
+The system handles authentication, media uploads, video management, tweets, likes, subscriptions, comments, and scalable user interactions using REST APIs.
 
----
-
-## 🚀 Features
-
-* 🔐 JWT Authentication (Access + Refresh Tokens)
-* 👤 User Management (Register, Login, Profile)
-* 🎥 Video APIs (Upload, Watch, Manage)
-* 🐦 Tweet APIs (Create, Fetch, Delete)
-* ❤️ Like System
-* 📺 Subscription System
-* 📝 Comment System
-* ☁️ Cloudinary Integration (Media Uploads)
-* ⚙️ Centralized Error Handling
+Built using Node.js, Express.js, MongoDB, and Cloudinary, the backend follows a clean MVC architecture with reusable utilities, middleware abstraction, centralized error handling, and JWT-based authentication.
 
 ---
 
-## 🛠️ Tech Stack
+## 🌐 Live Frontend
+
+### Frontend Application
+
+[https://viewtube-six.vercel.app/](https://viewtube-six.vercel.app/)
+
+### GitHub Repository
+
+[https://github.com/Jharwal77/mainbackend](https://github.com/Jharwal77/mainbackend)
+
+---
+
+# ✨ Features
+
+## 🔐 Authentication & Authorization
+
+* JWT Authentication
+* Access Token + Refresh Token Flow
+* Secure Login & Registration
+* Protected Routes Middleware
+* Cookie/Header Token Support
+
+## 👤 User Management
+
+* User Registration
+* User Login
+* User Profile APIs
+* Avatar & Cover Image Uploads
+* Channel Information
+
+## 🎥 Video Management System
+
+* Upload Videos
+* Fetch Videos
+* Watch Video API
+* Delete Videos
+* Video Metadata Management
+* Thumbnail Upload Support
+
+## 🐦 Tweet System
+
+* Create Tweets
+* Fetch Tweets
+* Delete Tweets
+* User Tweet Feed
+
+## ❤️ Social Interaction Features
+
+* Like System
+* Comment System
+* Subscription System
+* User Interaction APIs
+
+## ☁️ Media Upload Handling
+
+* Cloudinary Integration
+* Image Upload Support
+* Video Upload Support
+* Multer Middleware
+
+## ⚙️ Backend Engineering Features
+
+* Centralized Error Handling
+* Async Error Wrapper
+* Reusable API Response Structure
+* Modular MVC Architecture
+* Environment-Based Configuration
+
+---
+
+# 🛠️ Tech Stack
+
+## Backend
 
 * Node.js
 * Express.js
+
+## Database
+
 * MongoDB
 * Mongoose
-* JWT (Authentication)
-* Cloudinary (Media Storage)
+
+## Authentication
+
+* JWT (JSON Web Tokens)
+
+## Media Storage
+
+* Cloudinary
+
+## File Upload Handling
+
+* Multer
 
 ---
 
-## 📁 Project Structure
+# 📁 Project Structure
 
-```id="r8kq3k"
+```bash
 src/
 │
 ├── controllers/          # Business logic
@@ -72,34 +145,97 @@ src/
 
 ---
 
-## 🔗 API Overview
+# 🔗 API Overview
 
-### Auth
+## Authentication APIs
 
-* `POST /api/v1/users/register`
-* `POST /api/v1/users/login`
-
-### Videos
-
-* `GET /api/v1/videos`
-* `POST /api/v1/videos`
-
-### Tweets
-
-* `GET /api/v1/tweets`
-* `POST /api/v1/tweets`
-
-### Likes / Comments / Subscriptions
-
-* REST APIs for interaction features
+| Method | Route                         | Description          |
+| ------ | ----------------------------- | -------------------- |
+| POST   | `/api/v1/users/register`      | Register new user    |
+| POST   | `/api/v1/users/login`         | User login           |
+| POST   | `/api/v1/users/logout`        | Logout user          |
+| POST   | `/api/v1/users/refresh-token` | Refresh access token |
 
 ---
 
-## ⚙️ Environment Variables
+## Video APIs
 
-Create a `.env` file in root:
+| Method | Route                | Description      |
+| ------ | -------------------- | ---------------- |
+| GET    | `/api/v1/videos`     | Fetch all videos |
+| POST   | `/api/v1/videos`     | Upload new video |
+| GET    | `/api/v1/videos/:id` | Get single video |
+| DELETE | `/api/v1/videos/:id` | Delete video     |
 
-```id="t0c5w4"
+---
+
+## Tweet APIs
+
+| Method | Route                | Description  |
+| ------ | -------------------- | ------------ |
+| GET    | `/api/v1/tweets`     | Fetch tweets |
+| POST   | `/api/v1/tweets`     | Create tweet |
+| DELETE | `/api/v1/tweets/:id` | Delete tweet |
+
+---
+
+## Social Interaction APIs
+
+* Likes APIs
+* Comments APIs
+* Subscription APIs
+* Channel APIs
+* User Feed APIs
+
+---
+
+# 🔐 Authentication Flow
+
+The application uses JWT-based authentication.
+
+## Access Token
+
+* Short-lived token
+* Used for protected API requests
+
+## Refresh Token
+
+* Long-lived token
+* Used to regenerate access tokens
+
+## Security Features
+
+* Token verification middleware
+* Protected routes
+* Cookie/header support
+* Secure environment variable management
+
+---
+
+# ☁️ Cloudinary Media Upload Flow
+
+## Upload Process
+
+1. User uploads media
+2. Multer handles multipart form data
+3. File uploaded to Cloudinary
+4. Media URL stored in MongoDB
+5. Response returned to frontend
+
+Supported uploads:
+
+* Video files
+* Images
+* Thumbnails
+* Avatars
+
+---
+
+# ⚙️ Environment Variables
+
+Create a `.env` file in the root directory:
+
+```env
 PORT=8000
 CORS_ORIGIN=http://localhost:5173
 
@@ -118,279 +254,136 @@ CLOUDINARY_API_SECRET=your_api_secret
 
 ---
 
-## ⚙️ Setup Instructions
+# 🚀 Setup Instructions
 
-### 1. Clone repository
+## 1. Clone Repository
 
-```id="d7jwdx"
-git clone https://github.com/your-username/your-backend-repo.git
-cd your-backend-repo
+```bash
+git clone https://github.com/Jharwal77/mainbackend
+cd mainbackend
 ```
 
-### 2. Install dependencies
+## 2. Install Dependencies
 
-```id="u7u4j6"
+```bash
 npm install
 ```
 
-### 3. Run server
+## 3. Configure Environment Variables
 
-```id="r7m7mk"
+Create a `.env` file and add all required environment variables.
+
+---
+
+## 4. Start Development Server
+
+```bash
 npm run dev
 ```
 
 Server runs on:
 
-```id="7zcfzq"
+```bash
 http://localhost:8000
 ```
 
 ---
 
-## 🔐 Authentication Flow
+# 🗄️ Database Design
 
-* Access Token → short-lived
-* Refresh Token → long-lived
-* Stored in cookies or headers
+## Main Collections
 
----
-
-## 🌐 Deployment
-
-* Backend: Render
-* Database: MongoDB Atlas
-* Media: Cloudinary
-
----
-
-## 📌 Notes
-
-* Add MongoDB Atlas IP: `0.0.0.0/0`
-* Do not commit `.env`
-* Ensure proper CORS setup for frontend
+| Collection    | Purpose                |
+| ------------- | ---------------------- |
+| Users         | Stores user data       |
+| Videos        | Stores uploaded videos |
+| Tweets        | Stores tweets/posts    |
+| Comments      | Stores comments        |
+| Likes         | Stores likes data      |
+| Subscriptions | Stores subscriptions   |
 
 ---
 
-## 🚀 Future Improvements
+# ⚡ Backend Architecture Highlights
 
-* 🔔 Notifications system
-* 📊 Analytics dashboard
-* 🔍 Advanced search
-* 🧠 Recommendation engine
+## MVC Architecture
+
+The project follows a clean MVC architecture for scalability and maintainability.
+
+## Middleware-Based Design
+
+Reusable middlewares for:
+
+* authentication
+* file uploads
+* error handling
+* async request handling
+
+## Scalable API Structure
+
+* modular routes
+* reusable utilities
+* centralized response handling
+* organized folder structure
 
 ---
 
-## 👨‍💻 Author
+# 🌍 Deployment
 
-Rahul Jharwal
+## Frontend
+
+* Vercel
+
+## Backend
+
+* Render
+
+## Database
+
+* MongoDB Atlas
+
+## Media Storage
+
+* Cloudinary
+
+---
+
+# 📌 Important Notes
+
+* Do not commit `.env` files
+* Configure proper CORS settings
+* Add MongoDB Atlas IP whitelist (`0.0.0.0/0` for development)
+* Store secrets securely
+
+---
+
+# 🚀 Future Improvements
+
+Potential future enhancements:
+
+* 🔔 Notifications System
+* 📊 Analytics Dashboard
+* 🔍 Advanced Search
+* 🧠 Recommendation Engine
+* 💬 Real-Time Chat
+* 📡 WebSocket Integration
+* 🧾 Watch History Tracking
+* 🎯 Video Recommendation Algorithm
+* 🛡️ Rate Limiting & Security Hardening
+
+---
+
+# 👨‍💻 Author
+
+Rahul Meena
 Full Stack Developer (MERN)
 
 ---
 
-## ⭐ Contributing
+# ⭐ Contributing
 
-Pull requests are welcome. For major changes, open an issue first.
+Pull requests are welcome.
 
----
+For major changes, please open an issue first to discuss proposed updates.
 
-## 📜 License
 
-This project is licensed under the MIT License.
-# 🚀 Backend – Social Media Platform (YouTube + Twitter Clone)
-
-This is the backend API for a full-stack social media platform inspired by YouTube and Twitter. It handles authentication, video management, tweets, likes, subscriptions, and user interactions.
-
-Built using Node.js, Express, and MongoDB, the backend follows a clean and scalable MVC architecture.
-
----
-
-## 🚀 Features
-
-* 🔐 JWT Authentication (Access + Refresh Tokens)
-* 👤 User Management (Register, Login, Profile)
-* 🎥 Video APIs (Upload, Watch, Manage)
-* 🐦 Tweet APIs (Create, Fetch, Delete)
-* ❤️ Like System
-* 📺 Subscription System
-* 📝 Comment System
-* ☁️ Cloudinary Integration (Media Uploads)
-* ⚙️ Centralized Error Handling
-
----
-
-## 🛠️ Tech Stack
-
-* Node.js
-* Express.js
-* MongoDB
-* Mongoose
-* JWT (Authentication)
-* Cloudinary (Media Storage)
-
----
-
-## 📁 Project Structure
-
-```id="r8kq3k"
-src/
-│
-├── controllers/          # Business logic
-│   ├── user.controller.js
-│   ├── video.controller.js
-│   ├── tweet.controller.js
-│   └── ...
-│
-├── models/               # Mongoose schemas
-│   ├── user.models.js
-│   ├── video.models.js
-│   └── ...
-│
-├── routes/               # API routes
-│   ├── user.routes.js
-│   ├── video.routes.js
-│   └── ...
-│
-├── middlewares/          # Custom middlewares
-│   ├── auth.middleware.js
-│   ├── multer.middleware.js
-│
-├── db/                   # Database connection
-│   └── index.js
-│
-├── utils/                # Utility functions
-│   ├── ApiError.js
-│   ├── ApiResponse.js
-│   ├── asyncHandler.js
-│   └── cloudinary.js
-│
-├── app.js                # Express app setup
-├── index.js              # Server entry point
-└── constants.js
-```
-
----
-
-## 🔗 API Overview
-
-### Auth
-
-* `POST /api/v1/users/register`
-* `POST /api/v1/users/login`
-
-### Videos
-
-* `GET /api/v1/videos`
-* `POST /api/v1/videos`
-
-### Tweets
-
-* `GET /api/v1/tweets`
-* `POST /api/v1/tweets`
-
-### Likes / Comments / Subscriptions
-
-* REST APIs for interaction features
-
----
-
-## ⚙️ Environment Variables
-
-Create a `.env` file in root:
-
-```id="t0c5w4"
-PORT=8000
-CORS_ORIGIN=http://localhost:5173
-
-MONGODB_URI=your_mongodb_connection_string
-
-ACCESS_TOKEN_SECRET=your_secret
-ACCESS_TOKEN_EXPIRY=1d
-
-REFRESH_TOKEN_SECRET=your_secret
-REFRESH_TOKEN_EXPIRY=7d
-
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET=your_api_secret
-```
-
----
-
-## ⚙️ Setup Instructions
-
-### 1. Clone repository
-
-```id="d7jwdx"
-git clone https://github.com/your-username/your-backend-repo.git
-cd your-backend-repo
-```
-
-### 2. Install dependencies
-
-```id="u7u4j6"
-npm install
-```
-
-### 3. Run server
-
-```id="r7m7mk"
-npm run dev
-```
-
-Server runs on:
-
-```id="7zcfzq"
-http://localhost:8000
-```
-
----
-
-## 🔐 Authentication Flow
-
-* Access Token → short-lived
-* Refresh Token → long-lived
-* Stored in cookies or headers
-
----
-
-## 🌐 Deployment
-
-* Backend: Render
-* Database: MongoDB Atlas
-* Media: Cloudinary
-
----
-
-## 📌 Notes
-
-* Add MongoDB Atlas IP: `0.0.0.0/0`
-* Do not commit `.env`
-* Ensure proper CORS setup for frontend
-
----
-
-## 🚀 Future Improvements
-
-* 🔔 Notifications system
-* 📊 Analytics dashboard
-* 🔍 Advanced search
-* 🧠 Recommendation engine
-
----
-
-## 👨‍💻 Author
-
-Rahul Jharwal
-Full Stack Developer (MERN)
-
----
-
-## ⭐ Contributing
-
-Pull requests are welcome. For major changes, open an issue first.
-
----
-
-## 📜 License
-
-This project is licensed under the MIT License.
